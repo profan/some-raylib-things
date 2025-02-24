@@ -15,7 +15,7 @@ class Program
         float maxY = h;
         
         List<Vector2> circles = new List<Vector2>();
-        for (var i = 0; i < 100; i++)
+        for (var i = 0; i < number; i++)
         {
             float randomX = Random.Shared.Next((int)minX, (int)maxX);
             float randomY = Random.Shared.Next((int)minY, (int)maxY);
@@ -31,10 +31,12 @@ class Program
 
         List<Vector2>? oldCircles = null;
         List<Vector2>? newCircles = null;
+        List<List<Vector2>>? circlePositions = null;
         float v = 0.0f;
         
         while (!Raylib.WindowShouldClose())
         {
+            int circles = 100;
             float dt = Raylib.GetFrameTime();
             
             Raylib.BeginDrawing();
@@ -42,15 +44,18 @@ class Program
 
             Raylib.DrawText("Heartbeat", 12, 12, 20, Color.Black);
             
-            oldCircles ??= GenerateCircles(10);
-            newCircles ??= GenerateCircles(10);
+            oldCircles ??= GenerateCircles(circles);
+            newCircles ??= GenerateCircles(circles);
+            circlePositions ??= Enumerable.Range(0, circles).Select(i => new List<Vector2>()).ToList();
 
             for (int i = 0; i < oldCircles.Count; ++i)
             {
                 Vector2 oldCircle = oldCircles[i];
                 Vector2 newCircle = newCircles[i];
                 Vector2 currentCircle = Vector2.Lerp(oldCircle, newCircle, v);
+                DrawCircleTrail(circlePositions, i);
                 DrawCircle(currentCircle);
+                AddCirclePosition(circlePositions, currentCircle, i);
                 v += MathF.Sin(dt / 100.0f);
             }
 
@@ -67,13 +72,47 @@ class Program
         Raylib.CloseWindow();
     }
 
+    private static void AddCirclePosition(List<List<Vector2>> circlePositions, Vector2 c, int i)
+    {
+        int max = 100;
+        circlePositions[i].Add(c);
+        if (circlePositions[i].Count > max)
+        {
+            circlePositions[i].RemoveAt(0);
+        }
+    }
+
+    private static Color GetColorForPosition(Vector2 p)
+    {
+        byte r = (byte)((int)p.X % 255);
+        byte g = (byte)((int)p.Y % 255);
+        byte b = (byte)((int)(p.X + p.Y) / 255);
+        return new Color(r, g, b);
+    }
+
     private static void DrawCircle(Vector2 c)
     {
         float radius = 8.0f;
-        byte r = (byte)((int)c.X % 255);
-        byte g = (byte)((int)c.Y % 255);
-        byte b = (byte)((int)(c.X + c.Y) / 255);
-        Color current = new Color(r, g, b);
+        Color current = GetColorForPosition(c);
         Raylib.DrawCircle((int)c.X, (int)c.Y, radius, current);
+    }
+
+    private static void DrawCircleTrail(List<List<Vector2>> circlePositions, int i)
+    {
+        if (circlePositions[i].Count == 0)
+        {
+            return;
+        }
+        
+        for (int c = 1; c < circlePositions[i].Count; ++c)
+        {
+            var a = circlePositions[i][c - 1];
+            var b = circlePositions[i][c];
+            var l = Raylib.ColorLerp(GetColorForPosition(a), GetColorForPosition(b), 0.5f);
+            var alpha = ((float)c / circlePositions[i].Count);
+            var t = 16.0f * alpha;
+            var m = Raylib.ColorAlpha(l, alpha);
+            Raylib.DrawLineEx(a, b, t, m);
+        }
     }
 }

@@ -84,9 +84,11 @@ class Program
 
     private static Color GetColorForPosition(Vector2 p)
     {
-        byte r = (byte)((int)p.X % 255);
-        byte g = (byte)((int)p.Y % 255);
-        byte b = (byte)((int)(p.X + p.Y) / 255);
+        int w = Raylib.GetScreenWidth();
+        int h = Raylib.GetScreenHeight();
+        byte r = (byte)((p.X / w) * 255.0f);
+        byte g = (byte)((p.Y / h) * 255.0f);
+        byte b = (byte)(MathF.Sin((float)Raylib.GetTime()) * 255.0f);
         return new Color(r, g, b);
     }
 

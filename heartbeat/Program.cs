@@ -74,7 +74,7 @@ class Program
         Raylib.CloseWindow();
     }
 
-    private static void AddCirclePosition(List<List<Vector2>> circlePositions, Vector2 c, int i)
+    static void AddCirclePosition(List<List<Vector2>> circlePositions, Vector2 c, int i)
     {
         int max = 100;
         circlePositions[i].Add(c);
@@ -84,7 +84,7 @@ class Program
         }
     }
 
-    private static Color GetColorForPosition(Vector2 p, float t)
+    static Color GetColorForPosition(Vector2 p, float t)
     {
         int w = Raylib.GetScreenWidth();
         int h = Raylib.GetScreenHeight();
@@ -102,14 +102,14 @@ class Program
         return new Color(r, g, b);
     }
 
-    private static void DrawCircle(Vector2 c, float t)
+    static void DrawCircle(Vector2 c, float t)
     {
         float radius = 8.0f;
         Color current = GetColorForPosition(c, t);
         Raylib.DrawCircle((int)c.X, (int)c.Y, radius, current);
     }
 
-    private static void DrawCircleTrail(List<List<Vector2>> circlePositions, int i, float t)
+    static void DrawCircleTrail(List<List<Vector2>> circlePositions, int i, float t)
     {
         if (circlePositions[i].Count == 0)
         {

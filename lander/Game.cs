@@ -67,11 +67,11 @@ public class Game
             {
                 if (newParticle.Position.X > w || newParticle.Position.X < 0)
                 {
-                    newParticle.Velocity = newParticle.Velocity with { X = -newParticle.Velocity.X };
+                    newParticle.Velocity.X *= -1.0f;
                 }
                 else if (newParticle.Position.Y > h || newParticle.Position.Y < 0)
                 {
-                    newParticle.Velocity = newParticle.Velocity with { Y = -newParticle.Velocity.Y };
+                    newParticle.Velocity.Y *= -1.0f;
                 }
             }
 
@@ -101,7 +101,7 @@ public class Game
                             Vector2.Dot(vectorToLanderLeft, normalizedParticleVelocity),
                             Vector2.Dot(vectorToLanderRight, normalizedParticleVelocity)
                         );
-                        newParticle.Velocity = newParticle.Velocity with { X = newParticle.Velocity.X * directionX };
+                        newParticle.Velocity.X *= directionX;
                     }
                     if (newParticle.Position.Y < landerMax.Y && newParticle.Position.Y > landerMin.Y)
                     {
@@ -109,7 +109,7 @@ public class Game
                             Vector2.Dot(vectorToLanderForward, normalizedParticleVelocity),
                             Vector2.Dot(vectorToLanderBackward, normalizedParticleVelocity)
                         );
-                        newParticle.Velocity = newParticle.Velocity with { Y = newParticle.Velocity.Y * directionY };
+                        newParticle.Velocity.Y *= directionY;
                     }
                 }   
             }
@@ -197,7 +197,8 @@ public class Game
         Vector2 landerPosition = CurrentLander.Position + CurrentLander.Bounds.Size / 2.0f;
         Vector2 landerForward = landerPosition + CurrentLander.Orientation.AsVector().Rotated(-MathF.PI / 2.0f) *
             CurrentLander.Bounds.Radius() * 2.0f;
-        Raylib.DrawLineEx(landerPosition, landerForward, 1.0f, Color.Red);
+        
+        // Raylib.DrawLineEx(landerPosition, landerForward, 1.0f, Color.Red);
 
         foreach (var particle in Particles)
         {
@@ -216,8 +217,14 @@ public struct Lander(Rectangle bounds, Vector2 position, float orientation, Vect
     public float Thrust = 0.0f;
 }
 
-public record struct Particle(Vector2 Position, Vector2 Velocity, float Lifetime, float Size, Color Color)
+public struct Particle(Vector2 position, Vector2 velocity, float lifetime, float size, Color color)
 {
-    public readonly Color InitialColor = Color;
-    public readonly float TotalLifeTime = Lifetime;
+    public Vector2 Position = position;
+    public Vector2 Velocity = velocity;
+    public float Lifetime = lifetime;
+    public float Size = size;
+    public Color Color = color;
+    
+    public readonly Color InitialColor = color;
+    public readonly float TotalLifeTime = lifetime;
 }

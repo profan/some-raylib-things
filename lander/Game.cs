@@ -165,20 +165,32 @@ public class Game
         CurrentLander.Orientation += CurrentLander.AngularVelocity * dt;
         CurrentLander.Thrust = Math.Max(0.0f, CurrentLander.Thrust + thrustAdjustVector * dt);
 
-        if (thrustVector != 0.0f)
+        if (thrustVector != 0.0f && landerThrusterPower > 0.0f)
         {
-            float particleSize = 4.0f;
-            float particleLifetime = 2.0f;
-            float particleOffsetMaxX = 10.0f;
-            float particleDeviation = 22.5f.Deg2Rad();
-            float particleVelocityMagnitude = CurrentLander.LinearVelocity.Length();
-            Vector2 particlePosition = CurrentLander.Position + (Vector2.UnitX * particleOffsetMaxX).Rotated(CurrentLander.Orientation) * (Random.Shared.NextSingle() - 0.5f) * 2.0f +
-                                       (CurrentLander.Bounds.Size with { X = CurrentLander.Bounds.Size.X * 0.5f }).RotatedAroundOrigin(CurrentLander.Orientation, CurrentLander.Bounds.Size / 2.0f);
-            Vector2 particleVelocity =
-                -rotatedLanderForward.Rotated(((Random.Shared.NextSingle() - 0.5f) * 2.0f) * particleDeviation) *
-                particleVelocityMagnitude * 2.0f;
-            Particles.Add(new Particle(particlePosition, particleVelocity, particleLifetime, particleSize, Color.Orange));
+            int amount = (int)(Math.Max(1.0f, thrustVector * landerThrusterPower * 4.0f));
+            for (int i = 0; i < amount; i++)
+            {
+                SpawnThrusterParticle(rotatedLanderForward);
+            }
         }
+    }
+
+    void SpawnThrusterParticle(Vector2 accurateLanderForward)
+    {
+        float particleSize = 4.0f;
+        float particleLifetime = 2.0f;
+        float particleOffsetMaxX = 10.0f;
+        float particleDeviation = 22.5f.Deg2Rad();
+        float particleVelocityMagnitude = CurrentLander.LinearVelocity.Length();
+        
+        Vector2 particlePosition = CurrentLander.Position + (Vector2.UnitX * particleOffsetMaxX).Rotated(CurrentLander.Orientation) * (Random.Shared.NextSingle() - 0.5f) * 2.0f +
+                                   (CurrentLander.Bounds.Size with { X = CurrentLander.Bounds.Size.X * 0.5f }).RotatedAroundOrigin(CurrentLander.Orientation, CurrentLander.Bounds.Size / 2.0f);
+        
+        Vector2 particleVelocity =
+            -accurateLanderForward.Rotated(((Random.Shared.NextSingle() - 0.5f) * 2.0f) * particleDeviation) *
+            particleVelocityMagnitude * 2.0f;
+        
+        Particles.Add(new Particle(particlePosition, particleVelocity, particleLifetime, particleSize, Color.Orange));
     }
 
     public void Draw(float dt)

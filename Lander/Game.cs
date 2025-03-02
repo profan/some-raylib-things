@@ -1,6 +1,6 @@
 ﻿using System.Numerics;
 using Raylib_cs;
-using utils;
+using Utils;
 
 Main();
 
@@ -153,7 +153,7 @@ public class Game
         float turnVector = (isRightPressed - isLeftPressed);
 
         Vector2 rotatedLanderForward = (CurrentLander.Orientation - (MathF.PI / 2.0f)).AsVector();
-
+        
         CurrentLander.LinearVelocity += gravityVector;
         CurrentLander.LinearVelocity += rotatedLanderForward * thrustVector * landerThrusterPower;
         CurrentLander.AngularVelocity += (turnVector * landerRollSpeed);

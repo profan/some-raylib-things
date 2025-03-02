@@ -1,10 +1,10 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "heartbeat", "heartbeat\heartbeat.csproj", "{01CECD08-5A8B-47A2-BFEA-AE0D7D96DC70}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Heartbeat", "Heartbeat\Heartbeat.csproj", "{01CECD08-5A8B-47A2-BFEA-AE0D7D96DC70}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "lander", "lander\lander.csproj", "{F7D112CB-81C3-429C-B3D8-4E8BBC354CDA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lander", "Lander\Lander.csproj", "{F7D112CB-81C3-429C-B3D8-4E8BBC354CDA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "utils", "utils\utils.csproj", "{5A93775F-7A4F-418C-B9A8-F3EDBAB24335}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utils", "Utils\Utils.csproj", "{5A93775F-7A4F-418C-B9A8-F3EDBAB24335}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

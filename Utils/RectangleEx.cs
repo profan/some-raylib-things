@@ -1,7 +1,7 @@
 ﻿using System.Numerics;
 using Raylib_cs;
 
-namespace utils;
+namespace Utils;
 
 public static class RectangleEx
 {

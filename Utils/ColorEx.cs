@@ -1,6 +1,6 @@
 ﻿using Raylib_cs;
 
-namespace utils;
+namespace Utils;
 
 public static class ColorEx
 {
